@@ -9,4 +9,4 @@ A minimal shell using c
 3) open a terminal and type `make`
 4) now you can run it using `./soshell`
 5) and to top it all of `sudo make install`
-6) Optinal clean environment using `make clean`
+6) Optional clean environment using `make clean`
