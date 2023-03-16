@@ -3,7 +3,7 @@ A minimal shell using c
 
 
 # Install & build
-### WARNING this is not meant for windows it is not optimized and prob doesnt work for windows only linux
+### WARNING Not supported for windows
 1) Clone repo using downloaded zip or git
 2) cd in the repo
 3) open a terminal and type `make`
