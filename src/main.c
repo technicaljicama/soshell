@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/utsname.h>
 
 /*
   Function Declarations for builtin shell commands:
@@ -237,12 +238,18 @@ char **soshell_split_line(char *line)
  */
 void soshell_loop(void)
 {
+ struct utsname buffer;
+ if (uname(&buffer) < 0){
+   perror("uname");
+   exit(EXIT_FAILURE);
+  }
+ 
   char *line;
   char **args;
   int status;
 
   do {
-    printf("> ");
+    printf("%s $ ", buffer.nodename);
     line = soshell_read_line();
     args = soshell_split_line(line);
     status = soshell_execute(args);
