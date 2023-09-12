@@ -20,6 +20,7 @@
  */
 int soshell_cd(char **args);
 int soshell_ls(char **args);
+int soshell_rm(char **args);
 int soshell_help(char **args);
 int soshell_exit(char **args);
 
@@ -29,6 +30,7 @@ int soshell_exit(char **args);
 char *builtin_str[] = {
   "cd",
   "ls",
+  "rm",
   "help",
   "exit"
 };
@@ -36,6 +38,7 @@ char *builtin_str[] = {
 int (*builtin_func[]) (char **) = {
   &soshell_cd,
   &soshell_ls,
+  &soshell_rm,
   &soshell_help,
   &soshell_exit
 };
@@ -99,6 +102,26 @@ int soshell_ls(char **args)
 
   return 1;
 }
+
+/**
+   @brief Builtin command remove file
+   @param args list. args[1] will be the file ti remove
+   @return Always returns 1
+*/
+int soshell_rm(char **args) {
+  if(args[1] == NULL) {
+    printf("You must provide a file\n");
+    return 1;
+  }
+
+  int ret = remove(args[1]);
+  if(ret != 0) {
+    printf("Could not remove file.\n");
+  }
+
+  return 1;
+}
+
 /**
    @brief Builtin command: print help.
    @param args List of args.  Not examined.
