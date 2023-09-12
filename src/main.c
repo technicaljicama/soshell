@@ -89,6 +89,10 @@ int soshell_ls(char **args)
     stream = opendir(".");
   } else {
     stream = opendir(args[1]);
+    if(stream == NULL) {
+      printf("Unknown directory %s\n", args[1]);
+      return 1;
+    }
   }
 
   while(get_next(stream)) {}
