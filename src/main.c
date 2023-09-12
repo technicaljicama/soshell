@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/utsname.h>
+#include <dirent.h>
 
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
@@ -18,6 +19,7 @@
   Function Declarations for builtin shell commands:
  */
 int soshell_cd(char **args);
+int soshell_ls(char **args);
 int soshell_help(char **args);
 int soshell_exit(char **args);
 
@@ -26,12 +28,14 @@ int soshell_exit(char **args);
  */
 char *builtin_str[] = {
   "cd",
+  "ls",
   "help",
   "exit"
 };
 
 int (*builtin_func[]) (char **) = {
   &soshell_cd,
+  &soshell_ls,
   &soshell_help,
   &soshell_exit
 };
@@ -61,6 +65,36 @@ int soshell_cd(char **args)
   return 1;
 }
 
+int get_next(DIR* stream) {
+  struct dirent* entry = readdir(stream);
+  if(entry == NULL) {
+    closedir(stream);
+    return 0;
+  }
+
+  printf("%s\n", entry->d_name);
+  return 1;
+}
+
+/**
+   @brief Builtin command: list directory
+   @param args List of args. args[0] is "ls". args[1] is the directory
+   @return Always returns 1
+**/
+int soshell_ls(char **args)
+{
+  DIR* stream;
+
+  if(args[1] == NULL) {
+    stream = opendir(".");
+  } else {
+    stream = opendir(args[1]);
+  }
+
+  while(get_next(stream)) {}
+
+  return 1;
+}
 /**
    @brief Builtin command: print help.
    @param args List of args.  Not examined.
